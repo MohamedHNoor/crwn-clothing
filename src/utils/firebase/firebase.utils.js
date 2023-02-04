@@ -27,12 +27,6 @@ provider.setCustomParameters({
   prompt: 'select_account',
 });
 
-// export const createUserProfileDocument = async (userAuth, additionalData) => {
-//   if (!userAuth) return;
-
-//   console.log(userAuth);
-// };
-
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
@@ -43,7 +37,9 @@ export const createUserDocumentFromAuth = async (userAuth) => {
 
   const userSnapshot = await getDoc(userDocRef);
 
+  // 1 - if user does not exist
   if (!userSnapshot.exists()) {
+    // 2 - create user data, set the document with data from userAuth in my collection
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
@@ -58,10 +54,6 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     }
   }
 
-  return userSnapshot;
-
-  // 1 - if user does not exist
-  // 2 - create user, set the document with data from userAuth in my collection
-
   // 3 - if user data exists return the userDocRef
+  return userSnapshot;
 };
